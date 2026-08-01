@@ -190,8 +190,8 @@ body.landing .hero {
 }
 .hero {
   text-align: center;
-  padding-top: 64px;
-  padding-bottom: 56px;
+  padding-top: clamp(72px, 13vh, 140px);
+  padding-bottom: 64px;
 }
 .brand {
   display: inline-flex;

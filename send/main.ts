@@ -56,6 +56,24 @@ async function currentPayload(): Promise<Uint8Array | null> {
   return wrapPayload(bytes, { name, type: "image/png" });
 }
 
+// Idle state: instead of streaming a demo the moment the page opens, show a
+// static QR that opens the receiver on the phone — one scan, no typing an IP.
+// Streaming begins only once a file is chosen.
+async function showReceiverQR() {
+  const recv = new URL("../receive/", location.href).href;
+  try {
+    await QRCode.toCanvas(canvas, recv, {
+      width: 340,
+      margin: 2,
+      errorCorrectionLevel: "M",
+      color: { dark: "#000000", light: "#ffffff" },
+    });
+  } catch {
+    /* ignore */
+  }
+  specs.textContent = "Point your phone's camera here to open the receiver, then choose a file to send.";
+}
+
 async function main() {
   cfgFile.addEventListener("change", async () => {
     const f = cfgFile.files?.[0];
@@ -78,7 +96,7 @@ async function main() {
       void startStream();
     });
   }
-  await startStream();
+  void showReceiverQR();
   try {
     await (navigator as Navigator & { wakeLock?: { request(t: "screen"): Promise<unknown> } })
       .wakeLock?.request("screen");
