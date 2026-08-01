@@ -20,6 +20,7 @@ const preview = document.getElementById("preview")!;
 const stats = document.getElementById("stats")!;
 const progressEl = document.getElementById("progress")!;
 const bar = document.getElementById("bar")!;
+const pct = document.getElementById("pct")!;
 const result = document.getElementById("result")!;
 const settings = document.getElementById("settings") as HTMLDetailsElement;
 const metricsEl = document.getElementById("metrics")!;
@@ -155,6 +156,7 @@ function onDecoded(bytes: Uint8Array) {
   decoder.addFrame(header.seq, block);
   const progress = Math.min(0.99, decoder.framesNew / (decoder.k * OVERHEAD_EST));
   bar.style.width = `${(progress * 100).toFixed(1)}%`;
+  pct.textContent = `${Math.round(progress * 100)}%`;
 
   if (decoder.isComplete) {
     const payload = decoder.assemble()!;
@@ -170,9 +172,10 @@ function finish(payload: Uint8Array, hashOk: boolean, seconds: number, totalLen:
   stream?.getTracks().forEach((t) => t.stop());
   preview.style.display = "none";
   bar.style.width = "100%";
+  pct.textContent = "100%";
   const kb = Math.round(totalLen / 1024);
   const rate = (totalLen / 1024 / seconds).toFixed(1);
-  stats.textContent = `${kb} KB in ${seconds.toFixed(1)} s · ${rate} KB/s · hash ${hashOk ? "verified ✓" : "MISMATCH ✗"}`;
+  stats.textContent = `${kb} KB in ${seconds.toFixed(1)} s · ${rate} KB/s · hash ${hashOk ? "OK" : "MISMATCH"}`;
 
   // Strip the metadata envelope to recover the original file, name and type.
   // Older/plain streams without an envelope fall back to a generic PNG.
@@ -182,9 +185,17 @@ function finish(payload: Uint8Array, hashOk: boolean, seconds: number, totalLen:
   const type = unwrapped?.meta.type || "application/octet-stream";
   const url = URL.createObjectURL(new Blob([fileBytes as BlobPart], { type }));
 
+  // An animated checkmark draws itself in, then the card pops in — a clear,
+  // satisfying "done" beat at the end of the flow.
+  const card = document.createElement("div");
+  card.className = "result-card" + (hashOk ? "" : " bad");
+  card.innerHTML = hashOk
+    ? `<svg class="check" viewBox="0 0 52 52" aria-hidden="true"><circle class="check-c" cx="26" cy="26" r="24"/><path class="check-k" d="M15 27l7 7 15-16"/></svg>`
+    : `<svg class="check" viewBox="0 0 52 52" aria-hidden="true"><circle class="check-c" cx="26" cy="26" r="24"/><path class="check-k" d="M18 18l16 16M34 18l-16 16"/></svg>`;
+
   const heading = document.createElement("div");
   heading.className = "done";
-  heading.textContent = "Transfer Complete!";
+  heading.textContent = hashOk ? "Transfer complete" : "Received with errors";
 
   const download = document.createElement("a");
   download.className = "filebtn";
@@ -192,14 +203,15 @@ function finish(payload: Uint8Array, hashOk: boolean, seconds: number, totalLen:
   download.download = name;
   download.textContent = `Save ${name}`;
 
-  result.append(heading, download);
+  card.append(heading, download);
 
   if (type.startsWith("image/")) {
     const img = document.createElement("img");
     img.className = "received";
     img.src = url;
-    result.append(img);
+    card.append(img);
   }
+  result.append(card);
 }
 
 function updateStats() {

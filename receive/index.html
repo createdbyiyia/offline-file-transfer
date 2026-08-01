@@ -65,7 +65,10 @@
     <div class="preview" id="preview" style="display: none">
       <video id="video" muted playsinline></video>
     </div>
-    <div class="progress" id="progress" style="display: none"><div id="bar"></div></div>
+    <div class="progressbox" id="progress" style="display: none">
+      <div class="progresshead"><span>Receiving…</span><span id="pct">0%</span></div>
+      <div class="progresstrack"><div id="bar"></div></div>
+    </div>
     <div id="result"></div>
     <script type="module" src="./main.ts"></script>
   </body>

@@ -87,23 +87,92 @@ button {
   background: #000;
   display: block;
 }
-.progress {
+.progressbox {
   width: min(92vw, 480px);
-  height: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.progresshead {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #9a8f76;
+  font-variant-numeric: tabular-nums;
+}
+#pct {
+  color: #ffb257;
+  font-weight: 700;
+}
+.progresstrack {
+  height: 22px;
   background: #1b1712;
   border: 1px solid #2e2718;
-  border-radius: 7px;
+  border-radius: 11px;
   overflow: hidden;
 }
-.progress > div {
+.progresstrack > div {
   height: 100%;
+  width: 0;
   background: #ffb257;
-  transition: width 0.25s;
+  border-radius: 11px;
+  transition: width 0.3s ease;
+}
+.result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: pop 0.4s ease both;
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.check {
+  width: 76px;
+  height: 76px;
+}
+.check-c {
+  fill: none;
+  stroke: #7dc98f;
+  stroke-width: 2.5;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: draw 0.5s ease forwards;
+}
+.check-k {
+  fill: none;
+  stroke: #7dc98f;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: draw 0.4s 0.45s ease forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.result-card.bad .check-c,
+.result-card.bad .check-k {
+  stroke: #e0736a;
 }
 .done {
   color: #7dc98f;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
+}
+.result-card.bad .done {
+  color: #e0736a;
 }
 img.received {
   max-width: min(92vw, 640px);
@@ -406,4 +475,61 @@ body.landing .hero {
 }
 .site-footer p {
   margin: 6px 0;
+}
+
+html,
+body {
+  max-width: 100%;
+}
+body {
+  overflow-x: hidden;
+}
+h1,
+h2,
+h3,
+p,
+li,
+summary,
+.hint {
+  overflow-wrap: break-word;
+}
+@media (max-width: 560px) {
+  body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  h1 {
+    letter-spacing: 0.06em;
+  }
+  .landing h1 {
+    font-size: 30px;
+  }
+  .lede {
+    font-size: 16px;
+  }
+  .hero {
+    padding-top: 64px;
+    padding-bottom: 44px;
+  }
+  .cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    text-align: center;
+  }
+  .funnel-card {
+    padding: 24px 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .result-card,
+  .check-c,
+  .check-k {
+    animation: none !important;
+  }
+  .check-c,
+  .check-k {
+    stroke-dashoffset: 0;
+  }
 }
