@@ -255,7 +255,8 @@ body.landing .hero {
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 .hero {
   text-align: center;
@@ -284,14 +285,15 @@ body.landing .hero {
     -5px 5px 0 -3px #ffb257;
 }
 .landing h1 {
-  font-size: clamp(30px, 6vw, 46px);
-  line-height: 1.1;
+  font-size: clamp(30px, 6vw, 44px);
+  line-height: 1.12;
   letter-spacing: -0.01em;
   text-transform: none;
   color: #ede5d4;
-  max-width: 15ch;
+  max-width: 18ch;
   margin: 0 auto 18px;
   text-align: center;
+  text-wrap: balance;
 }
 .lede {
   color: #b8ad97;
