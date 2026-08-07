@@ -22,15 +22,17 @@ ctx.onmessage = async (e: MessageEvent) => {
   const { id, buf, w, h } = e.data as { id: number; buf: ArrayBuffer; w: number; h: number };
   try {
     const img = new ImageData(new Uint8ClampedArray(buf), w, h);
-    const results = await readBarcodes(img, { formats: ["QRCode"], maxNumberOfSymbols: 1 });
-    const r = results.find((x) => x.isValid && x.bytes.length > 0);
-    ctx.postMessage({ id, bytes: r ? r.bytes : null });
+    // Read every QR in the frame, not just one: the sender may show a g×g grid
+    // of independent codes, so a single capture can carry up to 9 fountain frames.
+    const results = await readBarcodes(img, { formats: ["QRCode"], maxNumberOfSymbols: 12 });
+    const list = results.filter((x) => x.isValid && x.bytes.length > 0).map((x) => x.bytes);
+    ctx.postMessage({ id, list });
   } catch {
-    ctx.postMessage({ id, bytes: null });
+    ctx.postMessage({ id, list: null });
   }
 };
 
 // warm the WASM so the first real frame doesn't pay instantiation
 void readBarcodes(new ImageData(8, 8), { formats: ["QRCode"] })
   .catch(() => undefined)
-  .then(() => ctx.postMessage({ id: -1, bytes: null }));
+  .then(() => ctx.postMessage({ id: -1, list: null }));

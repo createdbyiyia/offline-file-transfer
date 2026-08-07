@@ -85,10 +85,10 @@ async function start() {
     const w = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
     const slot = i;
     w.onmessage = (e: MessageEvent) => {
-      const { id, bytes } = e.data as { id: number; bytes: Uint8Array | null };
+      const { id, list } = e.data as { id: number; list: Uint8Array[] | null };
       if (id === -1) return; // warm-up
       busy[slot] = false;
-      if (bytes) onDecoded(bytes);
+      if (list) for (const bytes of list) onDecoded(bytes);
     };
     workers.push(w);
     busy.push(false);

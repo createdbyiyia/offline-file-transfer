@@ -29,6 +29,7 @@ const cfgFps = document.getElementById("cfg-fps") as HTMLSelectElement;
 const cfgBytes = document.getElementById("cfg-bytes") as HTMLSelectElement;
 const cfgEcc = document.getElementById("cfg-ecc") as HTMLSelectElement;
 const cfgSize = document.getElementById("cfg-size") as HTMLInputElement;
+const cfgGrid = document.getElementById("cfg-grid") as HTMLSelectElement;
 
 const payloadCache = new Map<string, Uint8Array>();
 let generation = 0; // bumped on every restart; stale loops see it and die
@@ -85,7 +86,7 @@ async function main() {
     filename.textContent = `${f.name} · ${Math.round(f.size / 1024)} KB`;
     void startStream();
   });
-  for (const el of [cfgPayload, cfgFps, cfgBytes, cfgEcc, cfgSize]) {
+  for (const el of [cfgPayload, cfgFps, cfgBytes, cfgEcc, cfgSize, cfgGrid]) {
     el.addEventListener("change", () => {
       if (el === cfgPayload) {
         // Picking a demo image clears any user file selection.
@@ -117,6 +118,7 @@ async function startStream() {
   const frameBytes = Number(cfgBytes.value);
   const ecc = cfgEcc.value as "L" | "M" | "Q" | "H";
   const displayPx = Number(cfgSize.value);
+  const grid = Number(cfgGrid.value); // g×g QR codes shown at once → ~g² throughput
 
   const sessionId = (Math.floor(Math.random() * 0xffff) + 1) & 0xffff;
   const blockLen = frameBytes - HEADER_LEN;
@@ -130,7 +132,7 @@ async function startStream() {
     payloadFnv: fnv1a(payload),
   };
 
-  let version: number | undefined; // locked after the first frame
+  let version: number | undefined; // locked after the first code
   let modules = 0;
   let scale = 1;
   const staging = document.createElement("canvas");
@@ -139,8 +141,8 @@ async function startStream() {
 
   const sizeCanvas = () => {
     const dpr = window.devicePixelRatio || 1;
-    const total = modules + 2 * MARGIN;
-    const cssBudget = Math.min(0.9 * Math.min(window.innerWidth, window.innerHeight), displayPx);
+    const total = (modules + 2 * MARGIN) * grid;
+    const cssBudget = Math.min(0.92 * Math.min(window.innerWidth, window.innerHeight), displayPx);
     scale = Math.max(1, Math.floor((cssBudget * dpr) / total));
     staging.width = total;
     staging.height = total;
@@ -150,9 +152,10 @@ async function startStream() {
     canvas.style.height = `${(total * scale) / dpr}px`;
   };
 
-  const makeFrame = (): ImageData => {
-    const bytes = packFrame({ ...header, seq: nextSeq }, encoder.encode(nextSeq));
-    nextSeq++;
+  // One QR for a given seq. Version/module count lock on the very first code so
+  // every cell in the grid tiles at exactly the same size.
+  const makeQR = (seq: number): { size: number; data: Uint8Array } => {
+    const bytes = packFrame({ ...header, seq }, encoder.encode(seq));
     const qr = QRCode.create([{ data: bytes, mode: "byte" } as unknown as QRCode.QRCodeSegment], {
       errorCorrectionLevel: ecc,
       version,
@@ -162,23 +165,40 @@ async function startStream() {
       version = qr.version;
       modules = qr.modules.size;
       sizeCanvas();
-      // Best-case time: K×1.18 frames must be captured, one per tx frame.
-      const eta = Math.ceil((encoder.k * 1.18) / txFps);
+      const codes = grid * grid;
+      const eta = Math.ceil((encoder.k * 1.18) / (txFps * codes));
       specs.textContent =
-        `${txFps} FPS · ${frameBytes} bytes per frame · V${version} · ECC ${ecc} · ` +
-        `${Math.round(payload.length / 1024)} KB payload · K=${encoder.k} · ~${eta}s+`;
+        `${txFps} FPS · ${grid}×${grid} codes · ${frameBytes} B/code · V${version} · ECC ${ecc} · ` +
+        `${Math.round(payload.length / 1024)} KB · K=${encoder.k} · ~${eta}s+`;
     }
-    const size = qr.modules.size;
-    const data = qr.modules.data;
-    const total = size + 2 * MARGIN;
+    return qr.modules as { size: number; data: Uint8Array };
+  };
+
+  // A displayed frame is a g×g grid of independent fountain codes. The camera
+  // captures the whole grid in one shot, so the receiver pulls g² frames each
+  // capture — throughput scales with the grid, correctness does not depend on it.
+  const makeGridFrame = (): ImageData => {
+    const cells: { size: number; data: Uint8Array }[] = [];
+    for (let i = 0; i < grid * grid; i++) cells.push(makeQR(nextSeq++));
+    const cell = modules + 2 * MARGIN;
+    const total = cell * grid;
     const img = new ImageData(total, total);
     const px = new Uint32Array(img.data.buffer);
     px.fill(0xffffffff);
-    for (let y = 0; y < size; y++) {
-      const row = (y + MARGIN) * total + MARGIN;
-      const src = y * size;
-      for (let x = 0; x < size; x++) {
-        if (data[src + x]) px[row + x] = 0xff000000;
+    for (let gy = 0; gy < grid; gy++) {
+      for (let gx = 0; gx < grid; gx++) {
+        const qr = cells[gy * grid + gx]!;
+        const size = qr.size;
+        const data = qr.data;
+        const ox = gx * cell + MARGIN;
+        const oy = gy * cell + MARGIN;
+        for (let y = 0; y < size; y++) {
+          const row = (oy + y) * total + ox;
+          const src = y * size;
+          for (let x = 0; x < size; x++) {
+            if (data[src + x]) px[row + x] = 0xff000000;
+          }
+        }
       }
     }
     return img;
@@ -187,7 +207,7 @@ async function startStream() {
   const pump = () => {
     if (gen !== generation) return; // superseded by a settings change
     try {
-      while (queue.length < LOOKAHEAD) queue.push(makeFrame());
+      while (queue.length < LOOKAHEAD) queue.push(makeGridFrame());
     } catch (err) {
       // e.g. frame bytes over capacity for the chosen ECC level
       specs.textContent = `✗ ${err instanceof Error ? err.message : String(err)}`;
