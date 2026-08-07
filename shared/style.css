@@ -405,7 +405,7 @@ body.landing .hero {
   margin-top: 16px;
   font-size: 14px;
   font-weight: 800;
-  color: var(--coral);
+  color: var(--coral-dark);
   text-decoration: none;
   background: var(--coral-soft);
   padding: 9px 16px;
