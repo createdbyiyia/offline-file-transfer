@@ -12,6 +12,7 @@
   --blue: #2f6bff;
   --radius: 16px;
   --font: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
 }
 
 * {
@@ -215,9 +216,20 @@ button,
 .result-card.bad .done {
   color: var(--coral);
 }
-img.received {
+img.received,
+video.received {
   max-width: min(92vw, 640px);
   border-radius: 16px;
+}
+audio.received {
+  width: min(92vw, 480px);
+}
+.preview-frame {
+  width: min(92vw, 720px);
+  height: min(70vh, 800px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
 }
 
 /* ---- settings ---- */
@@ -257,7 +269,7 @@ details.settings input[type="range"] {
   font: inherit;
   font-weight: 600;
   color: var(--ink);
-  background: #fff;
+  background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 8px 10px;
@@ -635,76 +647,39 @@ body.landing .hero {
   }
 }
 
-/* ============ DARK THEME ============ */
-:root.dark {
-  --bg: #16141c;
-  --ink: #f5f3f7;
-  --muted: #a8a2b4;
-  --faint: #7c7688;
-  --coral-dark: #ff8b78;
-  --coral-soft: #33201b;
-  --line: #2a2733;
-  --panel: #201d28;
-  --green: #34d399;
-}
-.dark .stage {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-.dark .card:nth-child(1) {
-  background: #16213a;
-}
-.dark .card:nth-child(2) {
-  background: #10281c;
-}
-.dark .card:nth-child(3) {
-  background: #2a2011;
-}
-.dark .card:nth-child(4) {
-  background: #201a33;
-}
-.dark .card:nth-child(5) {
-  background: #2c1720;
-}
-.dark .card:nth-child(6) {
-  background: #102a29;
-}
-
-/* theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 50;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-}
-.theme-toggle svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.theme-toggle .sun {
-  display: none;
-}
-.theme-toggle .moon {
-  display: block;
-}
-:root.dark .theme-toggle .sun {
-  display: block;
-}
-:root.dark .theme-toggle .moon {
-  display: none;
+/* ============ DARK THEME (automatic, follows the system) ============ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16141c;
+    --ink: #f5f3f7;
+    --muted: #a8a2b4;
+    --faint: #7c7688;
+    --coral-dark: #ff8b78;
+    --coral-soft: #33201b;
+    --line: #2a2733;
+    --panel: #201d28;
+    --green: #34d399;
+    color-scheme: dark;
+  }
+  .stage {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+  .card:nth-child(1) {
+    background: #16213a;
+  }
+  .card:nth-child(2) {
+    background: #10281c;
+  }
+  .card:nth-child(3) {
+    background: #2a2011;
+  }
+  .card:nth-child(4) {
+    background: #201a33;
+  }
+  .card:nth-child(5) {
+    background: #2c1720;
+  }
+  .card:nth-child(6) {
+    background: #102a29;
+  }
 }

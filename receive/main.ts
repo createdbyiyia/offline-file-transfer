@@ -171,6 +171,8 @@ function finish(payload: Uint8Array, hashOk: boolean, seconds: number, totalLen:
   captureGen++;
   stream?.getTracks().forEach((t) => t.stop());
   preview.style.display = "none";
+  progressEl.style.display = "none";
+  metricsEl.style.display = "none";
   bar.style.width = "100%";
   pct.textContent = "100%";
   const kb = Math.round(totalLen / 1024);
@@ -197,21 +199,58 @@ function finish(payload: Uint8Array, hashOk: boolean, seconds: number, totalLen:
   heading.className = "done";
   heading.textContent = hashOk ? "Transfer complete" : "Received with errors";
 
+  card.append(heading);
+
+  const previewEl = buildPreview(type, url);
+  if (previewEl) card.append(previewEl);
+
   const download = document.createElement("a");
   download.className = "filebtn";
   download.href = url;
   download.download = name;
   download.textContent = `Save ${name}`;
 
-  card.append(heading, download);
+  const again = document.createElement("button");
+  again.className = "btn ghost";
+  again.textContent = "Scan another file";
+  again.addEventListener("click", () => location.reload());
 
-  if (type.startsWith("image/")) {
-    const img = document.createElement("img");
-    img.className = "received";
-    img.src = url;
-    card.append(img);
-  }
+  card.append(download, again);
+
+  result.innerHTML = "";
   result.append(card);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Inline preview of the received file wherever the browser can render it.
+function buildPreview(type: string, url: string): HTMLElement | null {
+  if (type.startsWith("image/")) {
+    const el = document.createElement("img");
+    el.className = "received";
+    el.src = url;
+    return el;
+  }
+  if (type.startsWith("video/")) {
+    const el = document.createElement("video");
+    el.className = "received";
+    el.src = url;
+    el.controls = true;
+    return el;
+  }
+  if (type.startsWith("audio/")) {
+    const el = document.createElement("audio");
+    el.className = "received";
+    el.src = url;
+    el.controls = true;
+    return el;
+  }
+  if (type === "application/pdf" || type.startsWith("text/")) {
+    const el = document.createElement("iframe");
+    el.className = "preview-frame";
+    el.src = url;
+    return el;
+  }
+  return null;
 }
 
 function updateStats() {
