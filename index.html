@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ff5b45" />
+    <title>Send Files From PC to Phone — No Internet, No Bluetooth | Optical Transfer</title>
+    <meta
+      name="description"
+      content="Transfer files between your PC and phone with no internet, no Wi-Fi, no Bluetooth, no cable and no app. Your screen shows animated QR codes, your phone's camera reads them — the file travels as light. Free, private and fully offline."
+    />
+    <link rel="canonical" href="https://createdbyiyia.github.io/offline-file-transfer/" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Send Files From PC to Phone — No Internet, No Bluetooth" />
+    <meta
+      property="og:description"
+      content="Screen-to-camera file transfer. No Wi-Fi, no Bluetooth, no app. The file travels as light."
+    />
+    <meta property="og:url" content="https://createdbyiyia.github.io/offline-file-transfer/" />
+    <meta property="og:image" content="https://createdbyiyia.github.io/offline-file-transfer/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Send Files From PC to Phone — No Internet, No Bluetooth" />
+    <meta
+      name="twitter:description"
+      content="Screen-to-camera file transfer. No Wi-Fi, no Bluetooth, no app. The file travels as light."
+    />
+    <meta name="twitter:image" content="https://createdbyiyia.github.io/offline-file-transfer/og.png" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23ff5b45'/%3E%3Cg fill='%23ffffff'%3E%3Crect x='4' y='4' width='6' height='6'/%3E%3Crect x='14' y='4' width='6' height='6'/%3E%3Crect x='4' y='14' width='6' height='6'/%3E%3Crect x='14' y='14' width='3' height='3'/%3E%3Crect x='17' y='17' width='3' height='3'/%3E%3C/g%3E%3C/svg%3E"
+    />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Optical Transfer" />
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-n5SVIBVuIoVHf55CdW7o4.js"></script>
+    <script>
+      window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        };
+      plausible.init = plausible.init || function (i) { plausible.o = i || {}; };
+      plausible.init();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I transfer files from PC to phone without internet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Open the Send page on your computer and choose a file. The screen turns it into a stream of animated QR codes. Open the Receive page on your phone, point the camera at the screen, and the file rebuilds itself on the phone. No internet, Wi-Fi or Bluetooth connection is used between the devices — the data travels optically, as light."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work without Wi-Fi or Bluetooth?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. There is no network path between the two devices. The sender only displays QR codes and the receiver only reads them with its camera, so no Wi-Fi, Bluetooth, cable or pairing is required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work phone to phone, or laptop to laptop?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Any device with a screen can send and any device with a camera can receive, in either direction — phone to phone, laptop to laptop, PC to phone or phone to PC all work the same way."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it private and safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The file never leaves the room. Nothing is uploaded to a server or the cloud — the bytes only exist on your screen as light and in your phone's camera. It is ideal for air-gapped or sensitive machines."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How fast is optical file transfer and how big can files be?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It runs at roughly 100 KB/s, so it is best for documents, photos, keys, configs and small archives up to a few megabytes. Larger files work but take longer. Fountain coding means dropped frames only cost a little time, never correctness — the file is verified by hash on arrival."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to install an app?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. It runs entirely in your web browser on both the computer and the phone. There is nothing to install and no account to create."
+            }
+          }
+        ]
+      }
+    </script>
+    <link rel="stylesheet" crossorigin href="/offline-file-transfer/assets/style-DXrcyxDP.css">
+  </head>
+  <body class="landing">
+    <header class="hero">
+      <div class="brand"><span class="brand-mark"></span> Optical Transfer</div>
+      <h1>Send files <span class="hl">between devices</span> with no internet</h1>
+      <p class="lede">
+        PC to phone, phone to phone, laptop to laptop — any two devices, either
+        direction. No Wi-Fi, no Bluetooth, no app, no cable: one screen flashes
+        QR codes, the other's camera reads them, and the file travels as light.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="./send/">Start sending &mdash; on this PC</a>
+        <a class="btn ghost" href="./receive/">Receive &mdash; on your phone</a>
+      </div>
+      <p class="badges">Free · Fully offline · No install · Open source (MIT)</p>
+      <a
+        class="stars"
+        id="orig-stars"
+        href="https://github.com/bashalarmistalt/decimen-optical-transfer"
+        rel="noopener"
+        target="_blank"
+        >5,000+ stars on the original engine</a
+      >
+    </header>
+
+    <main>
+      <section class="steps">
+        <h2>How it works</h2>
+        <ol>
+          <li>
+            <span class="num">1</span>
+            <strong>On your computer</strong>, open <a href="./send/">Send</a> and pick a
+            file. The screen starts streaming animated QR codes.
+          </li>
+          <li>
+            <span class="num">2</span>
+            <strong>On your phone</strong>, open <a href="./receive/">Receive</a> and point
+            the camera at your computer's screen.
+          </li>
+          <li>
+            <span class="num">3</span>
+            <strong>Done.</strong> The file rebuilds itself and saves to your phone,
+            verified by checksum.
+          </li>
+        </ol>
+      </section>
+
+      <section class="features">
+        <h2>Why send files as light?</h2>
+        <div class="grid">
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" /><path d="M4 4l16 16" /></svg></div>
+            <h3>Truly offline</h3>
+            <p>No network path between the devices. Perfect for air-gapped or secure machines.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg></div>
+            <h3>No Bluetooth, no pairing</h3>
+            <p>Nothing to connect, nothing to trust. Just a screen and a camera.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9h18" /></svg></div>
+            <h3>No app to install</h3>
+            <p>Runs in any modern browser, on the computer and on the phone.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg></div>
+            <h3>Private by design</h3>
+            <p>Your data never leaves the room. Nothing is uploaded anywhere.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v4h-4" /></svg></div>
+            <h3>Resilient</h3>
+            <p>Fountain codes mean dropped frames don't matter — the file always rebuilds.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24"><path d="M8 6l-6 6 6 6M16 6l6 6-6 6" /></svg></div>
+            <h3>Open source</h3>
+            <p>MIT licensed. Inspect it, fork it, run it yourself.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="funnel">
+        <div class="funnel-card">
+          <h2>Love QR codes? Meet Codex QR</h2>
+          <p>
+            This tool turns files into QR codes. <strong>Codex QR</strong> lets you create
+            beautiful, custom <a href="https://codexqr.com/?utm_source=optical-transfer&amp;utm_medium=referral" rel="noopener">QR codes</a> for
+            links, menus, Wi-Fi, business cards and more — static codes that never expire and
+            dynamic codes you can track and edit anytime.
+          </p>
+          <a class="btn primary" href="https://codexqr.com/?utm_source=optical-transfer&amp;utm_medium=referral" rel="noopener">Create your QR code →</a>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>How do I transfer files from PC to phone without internet?</summary>
+          <p>
+            Open <a href="./send/">Send</a> on your computer and choose a file — the screen
+            turns it into a stream of animated QR codes. Open <a href="./receive/">Receive</a>
+            on your phone, point the camera at the screen, and the file rebuilds itself. No
+            internet, Wi-Fi or Bluetooth is used between the devices; the data travels as light.
+          </p>
+        </details>
+        <details>
+          <summary>Does it work without Wi-Fi or Bluetooth?</summary>
+          <p>
+            Yes. There is no network path between the two devices. The sender only shows QR
+            codes and the receiver only reads them with its camera — no Wi-Fi, Bluetooth, cable
+            or pairing required.
+          </p>
+        </details>
+        <details>
+          <summary>Does it work phone to phone, or laptop to laptop?</summary>
+          <p>
+            Yes. Any device with a screen can send and any device with a camera can receive,
+            in either direction — phone to phone, laptop to laptop, PC to phone or phone to PC
+            all work the same way.
+          </p>
+        </details>
+        <details>
+          <summary>Is it private and safe?</summary>
+          <p>
+            The file never leaves the room. Nothing is uploaded to a server or the cloud, so
+            it's ideal for air-gapped or sensitive machines.
+          </p>
+        </details>
+        <details>
+          <summary>How fast is it and how big can files be?</summary>
+          <p>
+            It runs at roughly 100 KB/s — best for documents, photos, keys, configs and small
+            archives up to a few megabytes. Larger files work but take longer. The file is
+            verified by hash on arrival, so it's either correct or it keeps going.
+          </p>
+        </details>
+        <details>
+          <summary>Do I need to install an app?</summary>
+          <p>No. It runs entirely in your browser, on both the computer and the phone.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Free &amp; open source (MIT). Built on the
+        <a href="https://github.com/bashalarmistalt/decimen-optical-transfer" rel="noopener"
+          >decimen-optical-transfer</a
+        >
+        fountain-coded QR engine.
+      </p>
+      <p>Brought to you by <a href="https://codexqr.com/?utm_source=optical-transfer&amp;utm_medium=referral" rel="noopener">Codex QR</a>.</p>
+    </footer>
+    <script>
+      (function () {
+        var el = document.getElementById("orig-stars");
+        if (!el) return;
+        fetch("https://api.github.com/repos/bashalarmistalt/decimen-optical-transfer")
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .then(function (d) {
+            if (d && typeof d.stargazers_count === "number") {
+              el.textContent = d.stargazers_count.toLocaleString() + " stars on the original engine";
+            }
+          })
+          .catch(function () {});
+      })();
+    </script>
+    <script>
+      if ("serviceWorker" in navigator)
+        navigator.serviceWorker.register("./sw.js").catch(function () {});
+    </script>
+  </body>
+</html>
